@@ -1,0 +1,403 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* =========================================================
+   Fish Online Shop theme
+   Blue primary / Orange accent / Rounded cards
+   ========================================================= */
+
+:root {
+  --fish-primary: #0d6efd;
+  --fish-primary-dark: #0a3d91;
+  --fish-royal: #1e5eff;
+  --fish-accent: #ff7a00;
+  --fish-accent-dark: #e56a00;
+  --fish-deep: #062a4e;
+  --fish-surface: #f4f8fc;
+}
+
+body {
+  color: #1b2a3a;
+  font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ---------- Navbar ---------- */
+.navbar-fish {
+  background: #fff;
+  border-bottom: 1px solid #e3ecf5;
+  box-shadow: 0 2px 12px rgba(13, 110, 253, 0.08);
+}
+
+.navbar-fish .navbar-brand {
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  color: var(--fish-deep);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-fish .navbar-brand .brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--fish-royal), var(--fish-primary-dark));
+  color: var(--fish-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-fish .nav-link {
+  font-weight: 500;
+  color: #40607d;
+  border-radius: 8px;
+  padding-inline: 0.9rem;
+}
+
+.navbar-fish .nav-link:hover,
+.navbar-fish .nav-link:focus {
+  color: var(--fish-primary);
+  background-color: var(--fish-surface);
+}
+
+.btn-fish-primary {
+  background: linear-gradient(135deg, var(--fish-royal), var(--fish-primary));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.55rem 1.15rem;
+  box-shadow: 0 6px 16px rgba(30, 94, 255, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-fish-primary:hover,
+.btn-fish-primary:focus {
+  color: #fff;
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(30, 94, 255, 0.34);
+}
+
+.btn-fish-accent {
+  background: linear-gradient(135deg, var(--fish-accent), var(--fish-accent-dark));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.55rem 1.15rem;
+  box-shadow: 0 6px 16px rgba(255, 122, 0, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-fish-accent:hover,
+.btn-fish-accent:focus {
+  color: #fff;
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(255, 122, 0, 0.36);
+}
+
+.btn-fish-outline {
+  border: 1px solid #d7e3f0;
+  color: #40607d;
+  background: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.55rem 1.15rem;
+}
+
+.btn-fish-outline:hover,
+.btn-fish-outline:focus {
+  background: var(--fish-surface);
+  color: var(--fish-primary);
+  border-color: #b9d2f2;
+}
+
+/* ---------- Page header ---------- */
+.fish-page-header {
+  background: linear-gradient(135deg, var(--fish-deep), var(--fish-royal));
+  border-radius: 18px;
+  color: #fff;
+  padding: 1.75rem 1.75rem 1.6rem;
+  box-shadow: 0 14px 34px rgba(6, 42, 78, 0.22);
+  position: relative;
+  overflow: hidden;
+}
+
+.fish-page-header::after {
+  content: '';
+  position: absolute;
+  right: -60px;
+  top: -70px;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.fish-page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.fish-page-header p {
+  margin: 0.35rem 0 0;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.fish-page-header .header-badge {
+  background: var(--fish-accent);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.82rem;
+}
+
+/* ---------- Cards ---------- */
+.fish-card {
+  border: 1px solid #e6eef7;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(16, 44, 82, 0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.fish-card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 34px rgba(16, 44, 82, 0.14);
+}
+
+.fish-product-image {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  background: #eaf2fb;
+}
+
+.fish-image-placeholder {
+  width: 100%;
+  height: 190px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  background: linear-gradient(135deg, #e8f2fd, #d5e7fb);
+  color: #7fa5cd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.fish-category-chip {
+  display: inline-block;
+  background: rgba(13, 110, 253, 0.1);
+  color: var(--fish-primary-dark);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+}
+
+.fish-price {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--fish-accent-dark);
+}
+
+.fish-meta {
+  font-size: 0.85rem;
+  color: #6b8299;
+}
+
+.stock-badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+}
+
+.stock-in {
+  background: #e3f7ec;
+  color: #12734a;
+}
+
+.stock-low {
+  background: #fff3e0;
+  color: #b35c00;
+}
+
+.stock-out {
+  background: #fde8e8;
+  color: #b02a2a;
+}
+
+/* ---------- Forms ---------- */
+.fish-form-card {
+  border: 1px solid #e6eef7;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(16, 44, 82, 0.06);
+}
+
+.fish-form-card .card-header {
+  background: var(--fish-surface);
+  border-bottom: 1px solid #e6eef7;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  font-weight: 700;
+  color: var(--fish-deep);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #2c4a68;
+  margin-bottom: 0.35rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: 10px;
+  border-color: #d7e3f0;
+  padding: 0.6rem 0.85rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #9dc4f5;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+}
+
+.input-group-text {
+  background: var(--fish-surface);
+  border-color: #d7e3f0;
+  color: #55708c;
+  font-weight: 600;
+}
+
+.form-text {
+  font-size: 0.8rem;
+  color: #8296aa;
+}
+
+/* Image upload drop zone */
+.fish-upload-zone {
+  border: 2px dashed #c5dcf5;
+  border-radius: 16px;
+  background: var(--fish-surface);
+  padding: 1rem;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  cursor: pointer;
+}
+
+.fish-upload-zone:hover,
+.fish-upload-zone.is-dragover {
+  border-color: var(--fish-primary);
+  background: #e9f2fe;
+}
+
+.fish-preview-frame {
+  width: 100%;
+  height: 260px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #eaf2fb;
+  border: 1px solid #e1ebf6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fish-preview-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fish-preview-empty {
+  color: #7fa5cd;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.fish-preview-empty svg {
+  opacity: 0.65;
+  margin-bottom: 0.5rem;
+}
+
+/* Details page */
+.fish-details-image {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 18px;
+  background: #eaf2fb;
+}
+
+.fish-spec-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px dashed #e6eef7;
+}
+
+.fish-spec-row:last-child {
+  border-bottom: none;
+}
+
+.fish-spec-row dt {
+  font-weight: 600;
+  color: #55708c;
+  font-size: 0.9rem;
+}
+
+.fish-spec-row dd {
+  font-weight: 600;
+  color: #1b2a3a;
+  margin: 0;
+  text-align: right;
+}
+
+/* Footer */
+.footer {
+  background: var(--fish-deep);
+  color: rgba(255, 255, 255, 0.72);
+  padding: 1.1rem 0;
+  margin-top: 2.5rem;
+}
+
+.footer a {
+  color: var(--fish-accent);
+}

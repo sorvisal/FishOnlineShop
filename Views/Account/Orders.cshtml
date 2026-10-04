@@ -1,0 +1,85 @@
+@model AccountOrdersViewModel
+@{
+    ViewData["Title"] = "My Orders";
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("My Orders"));
+
+    // Reused by the status badges on _ProductCard and the order rows below.
+    string StatusClass(string status) => status?.ToLowerInvariant() switch
+    {
+        "pending" => "aq-badge-warn",
+        "processing" => "aq-badge-blue",
+        "shipped" => "aq-badge-blue",
+        "delivered" => "aq-badge-in",
+        "cancelled" => "aq-badge-out",
+        _ => "aq-badge-mute"
+    };
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="aq-section-head">
+        <div>
+            <span class="aq-eyebrow">Account</span>
+            <h1 class="aq-section-title">My Orders</h1>
+            <p class="aq-section-sub">Every order you have placed with FishOnlineShop.</p>
+        </div>
+        <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-ghost">Continue Shopping</a>
+    </div>
+
+    @if (Model.IsEmpty)
+    {
+        <div class="aq-empty">
+            <div class="aq-empty-icon">📦</div>
+            <h2 class="aq-empty-title">No orders yet</h2>
+            <p class="aq-empty-text">
+                When you place an order it will appear here with its status and total.
+            </p>
+            <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-orange aq-btn-lg">
+                Browse the shop
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var order in Model.Orders)
+            {
+                <div class="col-12 col-lg-6">
+                    <div class="aq-panel p-4 h-100">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                            <div>
+                                <span class="aq-eyebrow d-block">Order</span>
+                                <strong class="fs-5">#@order.OrderId</strong>
+                            </div>
+                            <span class="aq-badge @StatusClass(order.OrderStatus)">@order.OrderStatus</span>
+                        </div>
+
+                        <div class="aq-summary-row">
+                            <span>Placed</span>
+                            <span>@order.OrderDate.ToLocalTime().ToString("dd MMM yyyy HH:mm")</span>
+                        </div>
+                        <div class="aq-summary-row">
+                            <span>Items</span>
+                            <span>@order.LineCount</span>
+                        </div>
+                        <div class="aq-summary-row">
+                            <span>Payment</span>
+                            <span>@order.PaymentMethod</span>
+                        </div>
+                        <div class="aq-summary-row aq-summary-total">
+                            <span class="fw-bold">Total</span>
+                            <span class="fw-bold">@order.TotalAmount.ToString("C")</span>
+                        </div>
+
+                        <a asp-controller="Account" asp-action="OrderDetails" asp-route-id="@order.OrderId"
+                           class="aq-btn aq-btn-ghost aq-btn-sm aq-btn-block mt-3">View details</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</section>

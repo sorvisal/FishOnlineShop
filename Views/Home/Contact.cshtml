@@ -1,0 +1,92 @@
+@{
+    ViewData["Title"] = "Contact";
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("Contact"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="aq-section-head">
+        <div>
+            <span class="aq-eyebrow">Say hello</span>
+            <h1 class="aq-section-title">Contact us</h1>
+            <p class="aq-section-sub">Call the shop, or send us an email and we will reply the same day.</p>
+        </div>
+        <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-orange">Browse the shop</a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-md-4">
+            <div class="aq-panel p-4 h-100">
+                <div class="aq-cat-icon mb-3" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z" stroke-linejoin="round" />
+                        <circle cx="12" cy="10" r="2.5" />
+                    </svg>
+                </div>
+                <h2 class="aq-panel-title h6">Visit the shop</h2>
+                <p class="mb-0" style="color: var(--aq-muted);">
+                    128 River Lane<br />Marina Bay
+                </p>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="aq-panel p-4 h-100">
+                <div class="aq-cat-icon mb-3" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4.5 5c1 0 2 .8 2 2l2 5-2.5 1.5a13 13 0 0 0 6 6L13.5 17l5 2c0 1.2-1 2-2 2A15 15 0 0 1 4.5 5Z" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h2 class="aq-panel-title h6">Call us</h2>
+                <p class="mb-0" style="color: var(--aq-muted);">
+                    <a href="tel:+15550142200">+1 (555) 014-2200</a><br />
+                    Open daily, 9:00 &ndash; 20:00
+                </p>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="aq-panel p-4 h-100">
+                <div class="aq-cat-icon mb-3" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2.5" y="5" width="19" height="14" rx="2" />
+                        <path d="m3 7 9 6 9-6" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h2 class="aq-panel-title h6">Email us</h2>
+                @{
+                    // TODO: replace with the real shop inbox before going live.
+                    var shopEmail = "YOUR-EMAIL-HERE";
+                    var isPlaceholderEmail = shopEmail == "YOUR-EMAIL-HERE";
+                }
+                <p class="mb-0" style="color: var(--aq-muted);">
+                    @if (isPlaceholderEmail)
+                    {
+                        <span class="text-break">YOUR-EMAIL-HERE</span><br />
+                        <span class="small">Email address not set yet.</span>
+                    }
+                    else
+                    {
+                        <a href="mailto:@shopEmail">@shopEmail</a><br />
+                        <span class="small">We reply within one working day</span>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="aq-panel p-4 p-md-5 mt-4">
+        <h2 class="aq-panel-title h5">Before you get in touch</h2>
+        <p class="mb-0" style="color: var(--aq-ink);">
+            The fastest way to check stock or find out whether a species suits your setup is
+            to browse the <a asp-controller="Shop" asp-action="Index">shop</a> first &mdash;
+            every listing shows the live quantity we have on hand. If something is not in
+            stock you can still order it and we will tell you honestly when it is expected
+            rather than taking the money and hoping.
+        </p>
+    </div>
+</section>

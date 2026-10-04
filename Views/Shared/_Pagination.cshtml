@@ -1,0 +1,59 @@
+@model PaginationViewModel
+
+@* Attribute order matters: asp-all-route-data must be written before asp-route-page,
+   otherwise it overwrites the page value and every link points at page 1. *@
+
+@if (Model.HasMultiplePages)
+{
+    <nav aria-label="Product pages">
+        <ul class="aq-pager">
+            <li class="aq-page-item @(Model.HasPrevious ? string.Empty : "disabled")">
+                @if (Model.HasPrevious)
+                {
+                    <a class="aq-page-link" asp-all-route-data="@Model.RouteValues" asp-route-page="@(Model.Page - 1)">Prev</a>
+                }
+                else
+                {
+                    <span class="aq-page-link" aria-disabled="true">Prev</span>
+                }
+            </li>
+
+            @foreach (var pageNumber in Model.Pages)
+            {
+                if (pageNumber is null)
+                {
+                    <li class="aq-page-item">
+                        <span class="aq-page-gap" aria-hidden="true">&hellip;</span>
+                    </li>
+                }
+                else if (pageNumber == Model.Page)
+                {
+                    <li class="aq-page-item active">
+                        <span class="aq-page-link" aria-current="page">@pageNumber</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="aq-page-item">
+                        <a class="aq-page-link" asp-all-route-data="@Model.RouteValues" asp-route-page="@pageNumber">@pageNumber</a>
+                    </li>
+                }
+            }
+
+            <li class="aq-page-item @(Model.HasNext ? string.Empty : "disabled")">
+                @if (Model.HasNext)
+                {
+                    <a class="aq-page-link" asp-all-route-data="@Model.RouteValues" asp-route-page="@(Model.Page + 1)">Next</a>
+                }
+                else
+                {
+                    <span class="aq-page-link" aria-disabled="true">Next</span>
+                }
+            </li>
+        </ul>
+    </nav>
+
+    <p class="text-center mt-3 mb-0 small" style="color: var(--aq-muted);">
+        Showing @Model.FirstItem&ndash;@Model.LastItem of @Model.TotalItems products
+    </p>
+}

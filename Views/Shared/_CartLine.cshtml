@@ -1,0 +1,85 @@
+@model CartItemViewModel
+
+@* Lines built with ShowControls = false render read only, which is what the checkout
+   summary and the order history need. *@
+
+@{
+    var showControls = Model.ShowControls;
+}
+
+<div class="aq-panel p-3 mb-3">
+    <div class="row g-3 align-items-center">
+
+        <div class="col-12 col-md-auto" style="width: 104px;">
+            <a asp-controller="Shop" asp-action="Details" asp-route-id="@Model.Product.ProductId"
+               class="d-block aq-product-media" style="height: 84px;">
+                @if (!string.IsNullOrWhiteSpace(Model.Product.ImageUrl))
+                {
+                    <img src="@Model.Product.ImageUrl" alt="@Model.Product.FishName" class="img-fluid rounded" loading="lazy" />
+                }
+                else
+                {
+                    <div class="aq-product-media-empty h-100 d-flex align-items-center justify-content-center">🐟</div>
+                }
+            </a>
+        </div>
+
+        <div class="col-12 col-md">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                <a asp-controller="Shop" asp-action="Details" asp-route-id="@Model.Product.ProductId"
+                   class="fw-semibold text-decoration-none">@Model.Product.FishName</a>
+                @if (Model.Product.Category is not null)
+                {
+                    <span class="aq-badge aq-badge-mute">@Model.Product.Category.CategoryName</span>
+                }
+            </div>
+
+            @if (showControls)
+            {
+                <div class="small" style="color: var(--aq-muted);">
+                    Unit price @Model.UnitPrice.ToString("C")
+                    @if (Model.QuantityWasReduced)
+                    {
+                        <span class="aq-badge aq-badge-warn ms-1">Quantity reduced to available stock</span>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="col-12 col-md-auto text-md-end" style="min-width: 110px;">
+            @if (showControls)
+            {
+                <form asp-controller="Cart" asp-action="Update" method="post" class="d-inline-block">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Product.ProductId" />
+                    <div class="d-flex align-items-center justify-content-md-end gap-2">
+                        <label class="aq-sr-only" for="qty-@Model.Product.ProductId">Quantity for @Model.Product.FishName</label>
+                        <input class="form-control form-control-sm" type="number" id="qty-@Model.Product.ProductId"
+                               name="quantity" value="@Model.Quantity" min="1" max="@Model.MaxQuantity"
+                               step="1" inputmode="numeric" style="width: 82px;" />
+                        <button type="submit" class="aq-btn aq-btn-sm aq-btn-soft">Update</button>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <span class="d-inline-block">× @Model.Quantity</span>
+            }
+        </div>
+
+        <div class="col-12 col-md-auto text-md-end" style="min-width: 110px;">
+            <div class="fw-bold fs-5">@Model.LineTotal.ToString("C")</div>
+            @if (showControls)
+            {
+                <form asp-controller="Cart" asp-action="Remove" method="post" class="mt-1">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Product.ProductId" />
+                    <button type="submit" class="btn btn-link btn-sm text-decoration-none p-0" style="color: var(--aq-danger);">
+                        Remove
+                    </button>
+                </form>
+            }
+        </div>
+
+    </div>
+</div>

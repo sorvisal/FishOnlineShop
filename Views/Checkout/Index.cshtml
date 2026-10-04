@@ -1,0 +1,131 @@
+@model CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+
+    var paymentMethods = (IReadOnlyList<SelectListItem>)ViewBag.PaymentMethods;
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("Cart", "Cart", "Index"),
+        new BreadcrumbItem("Checkout"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="aq-section-head">
+        <div>
+            <span class="aq-eyebrow">Almost there</span>
+            <h1 class="aq-section-title">Checkout</h1>
+            <p class="aq-section-sub">Confirm where the order is going and how you would like to pay.</p>
+        </div>
+        <a asp-controller="Cart" asp-action="Index" class="aq-btn aq-btn-ghost">Back to cart</a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-7">
+            <div class="aq-panel p-4 p-md-5">
+                <form asp-controller="Checkout" asp-action="PlaceOrder" method="post" novalidate id="checkoutForm">
+                    @Html.AntiForgeryToken()
+
+                    <h2 class="aq-panel-title h5 mb-3">Delivery details</h2>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ReceiverName"></label>
+                        <input class="form-control" asp-for="ReceiverName" autocomplete="name" />
+                        <span class="text-danger small d-block mt-1" asp-validation-for="ReceiverName"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Phone"></label>
+                        <input class="form-control" asp-for="Phone" autocomplete="tel" inputmode="tel" />
+                        <span class="text-danger small d-block mt-1" asp-validation-for="Phone"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" asp-for="ShippingAddress"></label>
+                        <textarea class="form-control" asp-for="ShippingAddress" rows="3"
+                                  autocomplete="street-address"></textarea>
+                        <span class="text-danger small d-block mt-1" asp-validation-for="ShippingAddress"></span>
+                    </div>
+
+                    <h2 class="aq-panel-title h5 mb-3">Payment method</h2>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="PaymentMethod"></label>
+                        <select class="form-select" asp-for="PaymentMethod" asp-items="paymentMethods">
+                        </select>
+                        <span class="text-danger small d-block mt-1" asp-validation-for="PaymentMethod"></span>
+                    </div>
+
+                    <div class="aq-alert aq-alert-info" role="note">
+                        <svg width="19" height="19" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                            <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 10.5h-1.5v-1.5h1.5v1.5Zm.9-4.24-.9.92c-.22.22-.4.42-.4.82h-1.5c0-.71.29-1.09.6-1.4l.9-.92c.5-.5.13-1.33-.6-1.33-.68 0-1.16.5-1.23 1.13L5.28 6.4c.11-1.23 1.2-2.15 2.47-2.15 1.36 0 2.46.92 2.46 2.2 0 .6-.26 1.07-.56 1.45Z" />
+                        </svg>
+                        <span>
+                            No card details are collected here. Choose Cash on Delivery, or
+                            Bank Transfer and we will email you the payment instructions.
+                        </span>
+                    </div>
+
+                    <button type="submit" class="aq-btn aq-btn-orange aq-btn-block aq-btn-lg mt-4" id="placeOrderButton">
+                        Place order &middot; @Model.Cart.Total.ToString("C")
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <div class="aq-panel p-4 position-sticky" style="top: 96px;">
+                <h2 class="aq-panel-title h5 mb-3">Your order</h2>
+
+                @foreach (var line in Model.Cart.Lines)
+                {
+                    <partial name="_CartLine" model="line" />
+                }
+
+                <div class="aq-summary-row">
+                    <span>Items</span>
+                    <span>@Model.Cart.TotalItems</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Subtotal</span>
+                    <span>@Model.Cart.SubTotal.ToString("C")</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Shipping</span>
+                    <span style="color: var(--aq-muted);">Free</span>
+                </div>
+                <div class="aq-summary-row aq-summary-total">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold fs-5">@Model.Cart.Total.ToString("C")</span>
+                </div>
+
+                <p class="aq-help mt-3 mb-0">
+                    Stock is checked again when you place the order.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Stops a double click from posting the order twice. The real guarantee is the
+        // cart being cleared once the order commits, but this removes the double post
+        // before it can start.
+        (function () {
+            var form = document.getElementById('checkoutForm');
+            var button = document.getElementById('placeOrderButton');
+            if (!form || !button) {
+                return;
+            }
+
+            form.addEventListener('submit', function () {
+                button.disabled = true;
+                button.textContent = 'Placing your order...';
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,86 @@
+@model OrderDetailsViewModel
+@{
+    ViewData["Title"] = $"Order #{Model.Order.OrderId}";
+
+    var order = Model.Order;
+
+    string StatusClass(string status) => status?.ToLowerInvariant() switch
+    {
+        "pending" => "aq-badge-warn",
+        "processing" => "aq-badge-blue",
+        "shipped" => "aq-badge-blue",
+        "delivered" => "aq-badge-in",
+        "cancelled" => "aq-badge-out",
+        _ => "aq-badge-mute"
+    };
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("My Orders", "Account", "Orders"),
+        new BreadcrumbItem($"Order #{order.OrderId}"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="aq-section-head">
+        <div>
+            <span class="aq-eyebrow">Order details</span>
+            <h1 class="aq-section-title mb-1">Order #@order.OrderId</h1>
+            <p class="aq-section-sub mb-0">
+                Placed @order.OrderDate.ToLocalTime().ToString("dd MMM yyyy HH:mm")
+                <span class="aq-badge @StatusClass(order.OrderStatus) ms-2">@order.OrderStatus</span>
+            </p>
+        </div>
+        <a asp-controller="Account" asp-action="Orders" class="aq-btn aq-btn-ghost">Back to my orders</a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-7">
+            <div class="aq-panel p-4">
+                <h2 class="aq-panel-title h5 mb-3">Items</h2>
+
+                @foreach (var line in Model.Lines)
+                {
+                    <partial name="_OrderLine" model="line" />
+                }
+
+                <div class="aq-summary-row">
+                    <span>Subtotal</span>
+                    <span>@order.TotalAmount.ToString("C")</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Shipping</span>
+                    <span style="color: var(--aq-muted);">Free</span>
+                </div>
+                <div class="aq-summary-row aq-summary-total">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold fs-5">@order.TotalAmount.ToString("C")</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <div class="aq-panel p-4">
+                <h2 class="aq-panel-title h5 mb-3">Delivery details</h2>
+                <div class="aq-summary-row">
+                    <span>Receiver</span>
+                    <span class="text-end">@order.ReceiverName</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Phone</span>
+                    <span class="text-end">@order.Phone</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Address</span>
+                    <span class="text-end">@order.ShippingAddress</span>
+                </div>
+            </div>
+
+            <div class="aq-panel p-4 mt-4">
+                <h2 class="aq-panel-title h5 mb-3">Payment</h2>
+                <p class="mb-0" style="color: var(--aq-ink);"><strong>@order.PaymentMethod</strong></p>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Access denied";
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("Access denied"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="aq-empty">
+        <div class="aq-empty-icon">🔒</div>
+        <h1 class="aq-empty-title">You don't have access to that page</h1>
+        <p class="aq-empty-text">
+            This area is restricted to shop administrators. If you think this is a mistake,
+            please contact us and we'll take a look.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-orange aq-btn-lg">Browse the shop</a>
+            <a asp-controller="Home" asp-action="Index" class="aq-btn aq-btn-ghost aq-btn-lg">Go to home</a>
+        </div>
+    </div>
+</section>

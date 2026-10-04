@@ -1,0 +1,28 @@
+@model CategoryTileViewModel
+
+<div class="col-12 col-sm-6 col-lg-4">
+    <div class="aq-cat-tile">
+        <span class="aq-cat-icon @(Model.UseAltAccent ? "aq-cat-icon-alt" : string.Empty)" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.5 12c2.6-3.6 5.6-5.4 9-5.4 3.2 0 5.6 1.6 7.1 4.2-1.5 3.6-4.4 5.4-7.7 5.4-3.3 0-6.1-1.4-8.4-4.2Z" />
+                <path d="M20.5 18.5c-1.6.9-3.2 1.3-4.8 1.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+        </span>
+
+        <div class="aq-min-w-0">
+            <h3 class="aq-cat-name">
+                <a class="aq-cat-link" asp-controller="@Model.ControllerName" asp-action="@Model.ActionName"
+                   asp-route-categoryId="@Model.CategoryId">@Model.CategoryName</a>
+            </h3>
+            <p class="aq-cat-count">
+                @(Model.ProductCount == 1 ? "1 product" : $"{Model.ProductCount} products")
+            </p>
+        </div>
+
+        <span class="aq-cat-arrow" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                <path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </span>
+    </div>
+</div>

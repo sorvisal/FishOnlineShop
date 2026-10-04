@@ -1,0 +1,97 @@
+@model CartIndexViewModel
+@{
+    ViewData["Title"] = "Your Cart";
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("Cart"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+            <p class="aq-eyebrow mb-1">Basket</p>
+            <h1 class="aq-section-title mb-0">Your Cart</h1>
+            @if (!Model.IsEmpty)
+            {
+                <p class="mb-0 mt-1" style="color: var(--aq-muted);">
+                    @Model.TotalItems item@(Model.TotalItems == 1 ? "" : "s") · @Model.Lines.Count product@(Model.Lines.Count == 1 ? "" : "s")
+                </p>
+            }
+        </div>
+
+        @if (!Model.IsEmpty)
+        {
+            <div class="d-flex flex-wrap gap-2">
+                <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-ghost">Continue Shopping</a>
+                <form asp-controller="Cart" asp-action="Clear" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="aq-btn aq-btn-ghost">Clear Cart</button>
+                </form>
+            </div>
+        }
+    </div>
+
+    @if (Model.IsEmpty)
+    {
+        <div class="aq-empty">
+            <div class="aq-empty-icon">🛒</div>
+            <h2 class="aq-empty-title">Your cart is empty</h2>
+            <p class="aq-empty-text">
+                Nothing here yet. Browse the shop and add a few fish to get started.
+            </p>
+            <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-orange aq-btn-lg">
+                Browse the shop
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            <div class="col-12 col-lg-8">
+                @foreach (var line in Model.Lines)
+                {
+                    <partial name="_CartLine" model="line" />
+                }
+            </div>
+
+            <div class="col-12 col-lg-4">
+                <div class="aq-panel p-4 position-sticky" style="top: 96px;">
+                    <h2 class="aq-panel-title h5 mb-3">Order Summary</h2>
+
+                    <div class="aq-summary-row">
+                        <span>Items</span>
+                        <span>@Model.TotalItems</span>
+                    </div>
+                    <div class="aq-summary-row">
+                        <span>Subtotal</span>
+                        <span>@Model.SubTotal.ToString("C")</span>
+                    </div>
+                    <div class="aq-summary-row">
+                        <span>Shipping</span>
+                        <span style="color: var(--aq-muted);">Calculated at checkout</span>
+                    </div>
+
+                    <div class="aq-summary-row aq-summary-total">
+                        <span class="fw-bold">Total</span>
+                        <span class="fw-bold fs-5">@Model.Total.ToString("C")</span>
+                    </div>
+
+                    <a asp-controller="Checkout" asp-action="Index" class="aq-btn aq-btn-orange aq-btn-block aq-btn-lg mt-3">
+                        Proceed to Checkout
+                    </a>
+
+                    <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-ghost aq-btn-block mt-2">
+                        Continue Shopping
+                    </a>
+
+                    <p class="aq-help mt-3 mb-0">
+                        Prices and availability are confirmed again at checkout.
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</section>

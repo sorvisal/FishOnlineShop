@@ -1,0 +1,197 @@
+﻿@model HomeIndexViewModel
+@{
+    ViewData["Title"] = "Aquarium & Fish";
+
+    ProductCardViewModel Card(FishProduct product, string columnClass, string actionLabel)
+        => new() { Product = product, ColumnClass = columnClass, ActionLabel = actionLabel };
+}
+
+<section class="aq-hero mt-4">
+    <div class="row align-items-center g-5">
+        <div class="col-12 col-lg-7">
+            <span class="aq-hero-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M2.5 12c2.6-3.6 5.6-5.4 9-5.4 3.2 0 5.6 1.6 7.1 4.2-1.5 3.6-4.4 5.4-7.7 5.4-3.3 0-6.1-1.4-8.4-4.2Z" />
+                </svg>
+                Aquarium &amp; Fish specialists
+            </span>
+
+            <h1 class="aq-hero-title">Healthy fish, delivered with real care advice</h1>
+
+            <p class="aq-hero-text">
+                Hand picked freshwater and marine stock, responsible sourcing from our own
+                quarantine tanks, and the guidance you need to keep them thriving.
+            </p>
+
+            <div class="aq-hero-actions">
+                <a class="aq-btn aq-btn-orange aq-btn-lg" asp-controller="Shop" asp-action="Index">Shop all products</a>
+                <a class="aq-btn aq-btn-lg aq-hero-btn-ghost" asp-controller="Shop" asp-action="Index"
+                   asp-route-inStockOnly="true">Browse in-stock fish</a>
+            </div>
+
+            <div class="aq-hero-stats">
+                <div>
+                    <div class="aq-hero-stat-value">@Model.TotalProductCount</div>
+                    <div class="aq-hero-stat-label">Products</div>
+                </div>
+                <div>
+                    <div class="aq-hero-stat-value">@Model.CategoryCount</div>
+                    <div class="aq-hero-stat-label">Categories</div>
+                </div>
+                <div>
+                    <div class="aq-hero-stat-value">7 days</div>
+                    <div class="aq-hero-stat-label">Live arrival guarantee</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <svg class="aq-hero-fish" viewBox="0 0 400 300" fill="none" role="img"
+                 aria-label="Illustration of an aquarium with fish">
+                <rect x="18" y="46" width="364" height="196" rx="18" fill="rgba(255,255,255,.08)" />
+                <rect x="18" y="46" width="364" height="196" rx="18" stroke="rgba(255,255,255,.34)" stroke-width="3" />
+                <path d="M18 218c46-30 78 8 122-8s70-30 118-6 82 12 124-6v44H18Z" fill="rgba(255,255,255,.1)" />
+                <g fill="rgba(255,255,255,.9)">
+                    <path d="M96 116c26-16 52-18 74-6-8 20-30 32-58 32-14 0-24-2-30-6-4-4-4-16 0-20h14Z" opacity=".95" />
+                    <path d="M96 116 76 98c-3-3-7-2-7 2v28c0 4 4 5 7 2l20-14Z" opacity=".7" />
+                    <circle cx="146" cy="113" r="3.6" fill="#26349b" />
+                </g>
+                <g fill="var(--aq-orange)">
+                    <path d="M236 176c20-12 40-14 57-5-6 16-24 25-45 25-11 0-19-2-23-5-3-3-3-12 0-15h11Z" />
+                    <path d="M236 176 221 162c-2-2-5-2-5 2v24c0 3 3 4 5 2l15-14Z" opacity=".65" />
+                    <circle cx="274" cy="173" r="3" fill="#26349b" />
+                </g>
+                <g fill="rgba(255,255,255,.45)">
+                    <circle cx="74" cy="82" r="5" />
+                    <circle cx="88" cy="66" r="3.5" />
+                    <circle cx="102" cy="52" r="2.5" />
+                    <circle cx="318" cy="96" r="4" />
+                    <circle cx="332" cy="82" r="2.5" />
+                </g>
+                <path d="M120 232c8 16 8 30 0 44M284 232c-8 16-8 30 0 44" stroke="var(--aq-orange)" stroke-width="6" stroke-linecap="round" opacity=".7" />
+                <path d="M60 276h280" stroke="rgba(255,255,255,.28)" stroke-width="6" stroke-linecap="round" />
+            </svg>
+        </div>
+    </div>
+</section>
+
+@* ---------------- Categories ---------------- *@
+@if (Model.CategoryTiles.Count > 0)
+{
+    <section class="aq-section">
+        <div class="aq-section-head">
+            <div>
+                <span class="aq-eyebrow">Browse</span>
+                <h2 class="aq-section-title">Shop by category</h2>
+                <p class="aq-section-sub">Everything you need for a thriving tank, in one place.</p>
+            </div>
+            <a class="aq-link-more" asp-controller="Shop" asp-action="Index">
+                View all
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+                    <path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </a>
+        </div>
+
+        <div class="row g-3 g-lg-4">
+            @foreach (var tile in Model.CategoryTiles)
+            {
+                <partial name="_CategoryTile" model="tile" />
+            }
+        </div>
+    </section>
+}
+
+@* ---------------- Top selling ---------------- *@
+<section class="aq-section">
+    <div class="aq-section-head">
+        <div>
+            <span class="aq-eyebrow">Most loved</span>
+            <h2 class="aq-section-title">Top selling products</h2>
+            <p class="aq-section-sub">The fish and supplies our customers keep coming back for.</p>
+        </div>
+        <a class="aq-link-more" asp-controller="Shop" asp-action="Index">
+            Shop everything
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+                <path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+    </div>
+
+    @if (Model.TopProducts.Count > 0)
+    {
+        <div class="row g-3 g-lg-4">
+            @foreach (var product in Model.TopProducts)
+            {
+                <partial name="_ProductCard" model="@Card(product, "col-12 col-6 col-lg-4 col-xl-3", "View details")" />
+            }
+        </div>
+    }
+    else
+    {
+        <div class="aq-empty">
+            <div class="aq-empty-icon" aria-hidden="true">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <path d="M2.5 12c2.6-3.6 5.6-5.4 9-5.4 3.2 0 5.6 1.6 7.1 4.2-1.5 3.6-4.4 5.4-7.7 5.4-3.3 0-6.1-1.4-8.4-4.2Z" />
+                    <path d="M20.5 18.5c-1.6.9-3.2 1.3-4.8 1.3" stroke-linecap="round" />
+                </svg>
+            </div>
+            <h3 class="aq-empty-title">Nothing in stock yet</h3>
+            <p class="aq-empty-text">
+                We are restocking our tanks. Add a product to the catalogue and it will show up here.
+            </p>
+            <a class="aq-btn aq-btn-blue" asp-controller="FishProducts" asp-action="Create">Create Fish Product</a>
+        </div>
+    }
+</section>
+
+@* ---------------- Promo banner ---------------- *@
+<section class="aq-section">
+    <div class="aq-promo">
+        <div class="row align-items-center g-4">
+            <div class="col-12 col-lg-8">
+                <span class="aq-promo-tag">Free delivery over $99</span>
+                <h2 class="aq-promo-title">Stock the whole tank in one delivery</h2>
+                <p class="aq-promo-text">
+                    Combine a tank, food and a starter school of fish and we will get it to you
+                    at no extra charge, packed properly for the journey.
+                </p>
+                <a class="aq-btn aq-btn-lg" style="background: var(--aq-white); color: var(--aq-orange-dark);"
+                   asp-controller="Shop" asp-action="Index">Start shopping</a>
+            </div>
+            <div class="col-12 col-lg-4 text-lg-end">
+                <div class="aq-hero-stat-value">$99+</div>
+                <div class="aq-hero-stat-label">Free delivery threshold</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ---------------- Featured ---------------- *@
+@if (Model.FeaturedProduct is not null)
+{
+    <section class="aq-section">
+        <div class="aq-section-head">
+            <div>
+                <span class="aq-eyebrow">Premium picks</span>
+                <h2 class="aq-section-title">Featured this week</h2>
+                <p class="aq-section-sub">A closer look at our most valuable stock.</p>
+            </div>
+            <a class="aq-link-more" asp-controller="Shop" asp-action="Index">
+                See all featured
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+                    <path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </a>
+        </div>
+
+        <div class="row g-3 g-lg-4">
+            <partial name="_ProductCard" model="@Card(Model.FeaturedProduct, "col-12 col-lg-6 col-xl-4", "View featured fish")" />
+
+            @foreach (var product in Model.FeaturedSide)
+            {
+                <partial name="_ProductCard" model="@Card(product, "col-6 col-lg-3 col-xl-2", "View fish")" />
+            }
+        </div>
+    </section>
+}

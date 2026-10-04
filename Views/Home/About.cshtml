@@ -1,0 +1,75 @@
+@{
+    ViewData["Title"] = "About us";
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("About us"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="aq-section-head">
+        <div>
+            <span class="aq-eyebrow">Our story</span>
+            <h1 class="aq-section-title">About FishOnlineShop</h1>
+            <p class="aq-section-sub">A small aquarium specialist serving fish keepers since 2014.</p>
+        </div>
+        <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-orange">Browse the shop</a>
+    </div>
+
+    <div class="row g-4 g-lg-5">
+        <div class="col-12 col-lg-7">
+            <div class="aq-panel p-4 p-md-5">
+                <h2 class="aq-panel-title h5">Who we are</h2>
+                <p style="color: var(--aq-ink);">
+                    FishOnlineShop started in 2014 as a single counter in a Marina Bay
+                    basement, selling freshwater stock to people who kept asking the same
+                    question: <em>which fish will actually survive my tank?</em>
+                </p>
+                <p style="color: var(--aq-ink);">
+                    Twelve years later we are still answering it the same way. Every animal
+                    we list has been quarantined and observed before it goes on sale, every
+                    stock figure on this site is the figure we would count in the shop, and
+                    every order is packed by the same people who answer the phone.
+                </p>
+
+                <h2 class="aq-panel-title h5 mt-4">How we choose what we sell</h2>
+                <p style="color: var(--aq-ink);">
+                    We would rather list four species properly than forty badly. If we cannot
+                    source an animal with a known origin, known temperament and an honest
+                    adult size, we leave it off the site.
+                </p>
+
+                <h2 class="aq-panel-title h5 mt-4">What we do not do</h2>
+                <p style="color: var(--aq-ink);">
+                    We do not ship fish internationally, we do not sell wild-caught stock,
+                    and we will not tell you a fish is beginner-proof if it is not. If you
+                    are unsure whether something suits your setup, call us before you order.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <div class="aq-panel p-4 mb-4">
+                <h2 class="aq-panel-title h5">The shop</h2>
+                <p class="mb-2" style="color: var(--aq-muted);">128 River Lane, Marina Bay</p>
+                <p class="mb-0" style="color: var(--aq-muted);">
+                    Open daily, 9:00 &ndash; 20:00.<br />
+                    Free local delivery on orders over $99.
+                </p>
+            </div>
+
+            <div class="aq-panel p-4">
+                <h2 class="aq-panel-title h5">Talk to a human</h2>
+                <p class="mb-0" style="color: var(--aq-muted);">
+                    Questions about sizing, water parameters or whether a species will cope in
+                    your tank are the ones we enjoy answering most.
+                </p>
+                <a asp-controller="Home" asp-action="Contact" class="aq-btn aq-btn-ghost aq-btn-block mt-3">
+                    Contact details
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

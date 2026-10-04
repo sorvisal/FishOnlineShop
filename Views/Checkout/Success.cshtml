@@ -1,0 +1,122 @@
+@model CheckoutSuccessViewModel
+@{
+    ViewData["Title"] = $"Order #{Model.Order.OrderId} confirmed";
+
+    var order = Model.Order;
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("My Orders", "Account", "Orders"),
+        new BreadcrumbItem($"Order #{order.OrderId}"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="aq-empty mb-4">
+        <div class="aq-empty-icon">🐠</div>
+        <h1 class="aq-empty-title">Thank you, your order is placed</h1>
+        <p class="aq-empty-text">
+            We have your order <strong>#@order.OrderId</strong> and will be in touch about delivery.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-7">
+            <div class="aq-panel p-4">
+                <h2 class="aq-panel-title h5 mb-3">Items</h2>
+
+                @foreach (var line in Model.Lines)
+                {
+                    <partial name="_OrderLine" model="line" />
+                }
+
+                <div class="aq-summary-row">
+                    <span>Subtotal</span>
+                    <span>@order.TotalAmount.ToString("C")</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Shipping</span>
+                    <span style="color: var(--aq-muted);">Free</span>
+                </div>
+                <div class="aq-summary-row aq-summary-total">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold fs-5">@order.TotalAmount.ToString("C")</span>
+                </div>
+            </div>
+
+            <div class="aq-panel p-4 mt-4">
+                <h2 class="aq-panel-title h5 mb-3">What happens next</h2>
+                <ol class="mb-0 ps-3" style="color: var(--aq-ink);">
+                    <li class="mb-2">
+                        We confirm your order and check the stock we reserved for you.
+                    </li>
+                    <li class="mb-2">
+                        We pack the fish to order, so a live animal is never sitting in a
+                        parcel for days.
+                    </li>
+                    <li>
+                        We contact you to arrange delivery.
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <div class="aq-panel p-4">
+                <h2 class="aq-panel-title h5 mb-3">Delivery details</h2>
+                <div class="aq-summary-row">
+                    <span>Receiver</span>
+                    <span class="text-end">@order.ReceiverName</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Phone</span>
+                    <span class="text-end">@order.Phone</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Address</span>
+                    <span class="text-end">@order.ShippingAddress</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Placed</span>
+                    <span class="text-end">@order.OrderDate.ToLocalTime().ToString("dd MMM yyyy HH:mm")</span>
+                </div>
+                <div class="aq-summary-row">
+                    <span>Status</span>
+                    <span class="text-end">
+                        <span class="aq-badge aq-badge-warn">@order.OrderStatus</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="aq-panel p-4 mt-4">
+                <h2 class="aq-panel-title h5 mb-3">Payment</h2>
+                <p class="mb-0" style="color: var(--aq-ink);">
+                    <strong>@order.PaymentMethod</strong>
+                </p>
+                @if (Model.IsBankTransfer)
+                {
+                    <p class="mt-2 mb-0" style="color: var(--aq-muted);">
+                        We will contact you with the payment details for your transfer. Please
+                        wait for our email before sending anything, and quote your order
+                        number <strong>#@order.OrderId</strong> as the reference.
+                    </p>
+                }
+                else
+                {
+                    <p class="mt-2 mb-0" style="color: var(--aq-muted);">
+                        Please have the exact amount ready for our rider. We will call the
+                        number above when your order is on its way.
+                    </p>
+                }
+            </div>
+
+            <a asp-controller="Account" asp-action="Orders" class="aq-btn aq-btn-ghost aq-btn-block mt-4">
+                View my orders
+            </a>
+            <a asp-controller="Shop" asp-action="Index" class="aq-btn aq-btn-orange aq-btn-block mt-2">
+                Continue shopping
+            </a>
+        </div>
+    </div>
+</section>

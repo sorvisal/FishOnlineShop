@@ -1,0 +1,57 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Sign in";
+
+    var returnUrl = ViewData["ReturnUrl"] as string;
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("Sign in"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-5">
+
+            <div class="text-center mb-4">
+                <p class="aq-eyebrow mb-1">Welcome back</p>
+                <h1 class="aq-section-title">Sign in</h1>
+            </div>
+
+            <div class="aq-panel p-4 p-md-5">
+                <form asp-controller="Account" asp-action="Login" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Email"></label>
+                        <input class="form-control" asp-for="Email" autocomplete="username"
+                               inputmode="email" autofocus />
+                        <span class="text-danger small d-block mt-1" asp-validation-for="Email"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" asp-for="Password"></label>
+                        <input class="form-control" asp-for="Password" autocomplete="current-password" />
+                        <span class="text-danger small d-block mt-1" asp-validation-for="Password"></span>
+                    </div>
+
+                    <button type="submit" class="aq-btn aq-btn-orange aq-btn-block aq-btn-lg">Sign in</button>
+                </form>
+            </div>
+
+            <p class="text-center mt-4 mb-0" style="color: var(--aq-muted);">
+                New to FishOnlineShop?
+                <a asp-controller="Account" asp-action="Register"
+                   asp-route-returnUrl="@returnUrl">Create an account</a>
+            </p>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

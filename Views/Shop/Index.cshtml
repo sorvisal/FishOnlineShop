@@ -1,0 +1,196 @@
+@model ShopIndexViewModel
+@{
+    ViewData["Title"] = "Shop";
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("Shop"));
+
+    // Admin-only Edit/Delete buttons are decided here so the shared card partial never
+    // has to know about roles.
+    var isAdmin = User.IsInRole(UserRoles.Admin);
+
+    ProductCardViewModel Card(FishProduct product)
+        => new()
+        {
+            Product = product,
+            ColumnClass = "col-12 col-6 col-xl-4",
+            ActionLabel = "View fish",
+            ShowAdminActions = isAdmin
+        };
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<div class="aq-section-head">
+    <div>
+        <span class="aq-eyebrow">Store</span>
+        <h1 class="aq-section-title">All products</h1>
+        <p class="aq-section-sub">
+            @Model.Pagination.TotalItems @(Model.Pagination.TotalItems == 1 ? "product" : "products")
+            @if (Model.HasActiveFilters)
+            {
+                <span> &middot; filtered by @Model.ActiveFilterSummary</span>
+            }
+        </p>
+    </div>
+</div>
+
+<form method="get" asp-controller="Shop" asp-action="Index">
+    @* Applying a filter should always land back on page 1. *@
+    <input type="hidden" name="page" value="1" />
+
+    <div class="row g-4">
+        @* ---------------- Filter sidebar ---------------- *@
+        <div class="col-12 col-lg-3">
+            <aside class="aq-panel" aria-labelledby="filterHeading">
+                <div class="aq-panel-head">
+                    <h2 class="aq-panel-title" id="filterHeading">Filters</h2>
+                </div>
+
+                <div class="p-3 p-lg-4">
+                    <div class="mb-4">
+                        <label class="aq-label" for="search">Search</label>
+                        <input class="aq-control" type="search" id="search" name="search"
+                               value="@Model.Search" placeholder="Fish name or keyword" />
+                    </div>
+
+                    <fieldset class="mb-4">
+                        <legend class="aq-label mb-2">Category</legend>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <label class="aq-check">
+                                <input type="checkbox" name="categoryIds" value="@category.CategoryId"
+                                       checked="@category.IsSelected" />
+                                <span>
+                                    @category.CategoryName
+                                    <span style="color: var(--aq-muted);">(@category.ProductCount)</span>
+                                </span>
+                            </label>
+                        }
+                    </fieldset>
+
+                    <fieldset class="mb-4">
+                        <legend class="aq-label mb-2">Price range</legend>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <label class="aq-sr-only" for="minPrice">Minimum price</label>
+                                <input class="aq-control" type="number" id="minPrice" name="minPrice"
+                                       min="0" step="0.01" placeholder="Min" value="@Model.MinPrice" />
+                            </div>
+                            <div class="col-6">
+                                <label class="aq-sr-only" for="maxPrice">Maximum price</label>
+                                <input class="aq-control" type="number" id="maxPrice" name="maxPrice"
+                                       min="0" step="0.01" placeholder="Max" value="@Model.MaxPrice" />
+                            </div>
+                        </div>
+                        <span class="aq-help">Leave a field empty for no limit.</span>
+                    </fieldset>
+
+                    <div class="mb-4">
+                        <label class="aq-check">
+                            <input type="checkbox" name="inStockOnly" value="true" checked="@Model.InStockOnly" />
+                            <span>In stock only</span>
+                        </label>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="aq-btn aq-btn-blue aq-btn-block">Apply filters</button>
+                        <a class="aq-btn aq-btn-ghost aq-btn-block" asp-controller="Shop" asp-action="Index">Clear filters</a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        @* ---------------- Results ---------------- *@
+        <div class="col-12 col-lg-9">
+            <div class="aq-section-head">
+                <p class="aq-section-sub mb-0">
+                    @if (Model.Pagination.TotalItems == 0)
+                    {
+                        <text>No matching products</text>
+                    }
+                    else
+                    {
+                        <text>
+                            Showing @Model.Pagination.FirstItem&ndash;@Model.Pagination.LastItem
+                            of @Model.Pagination.TotalItems
+                        </text>
+                    }
+                </p>
+
+                <div class="d-flex align-items-center gap-2">
+                    <label class="aq-label mb-0" for="sort">Sort</label>
+                    <select class="aq-control" asp-for="Sort" asp-items="Model.SortOptions"
+                            id="sort" data-aq-autosubmit="true" style="width:auto;">
+                    </select>
+                </div>
+            </div>
+
+            @if (Model.Products.Count > 0)
+            {
+                <div class="row g-3 g-xl-4">
+                    @foreach (var product in Model.Products)
+                    {
+                        <partial name="_ProductCard" model="@Card(product)" />
+                    }
+                </div>
+            }
+            else if (Model.HasActiveFilters)
+            {
+                <div class="aq-empty">
+                    <div class="aq-empty-icon" aria-hidden="true">
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="m20 20-3.5-3.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h2 class="aq-empty-title">No products match your filters</h2>
+                    <p class="aq-empty-text">
+                        Nothing matches @Model.ActiveFilterSummary. Try widening the price range or
+                        clearing a category.
+                    </p>
+                    <a class="aq-btn aq-btn-blue" asp-controller="Shop" asp-action="Index">Clear filters</a>
+                </div>
+            }
+            else
+            {
+                <div class="aq-empty">
+                    <div class="aq-empty-icon" aria-hidden="true">
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                            <path d="M2.5 12c2.6-3.6 5.6-5.4 9-5.4 3.2 0 5.6 1.6 7.1 4.2-1.5 3.6-4.4 5.4-7.7 5.4-3.3 0-6.1-1.4-8.4-4.2Z" />
+                            <path d="M20.5 18.5c-1.6.9-3.2 1.3-4.8 1.3" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h2 class="aq-empty-title">The shop is empty</h2>
+                    <p class="aq-empty-text">
+                        No products have been added to the catalogue yet.
+                    </p>
+                    <a class="aq-btn aq-btn-blue" asp-controller="FishProducts" asp-action="Index">Manage catalogue</a>
+                </div>
+            }
+        </div>
+    </div>
+</form>
+
+<partial name="_Pagination" model="Model.Pagination" />
+
+@section Scripts {
+    <script>
+        // Progressive enhancement: changing the sort submits the surrounding filter form
+        // so the visitor keeps their current filters. Plain JS, no framework.
+        (function () {
+            var sort = document.getElementById('sort');
+            if (!sort) {
+                return;
+            }
+
+            sort.addEventListener('change', function () {
+                var form = sort.closest('form');
+                if (form) {
+                    form.submit();
+                }
+            });
+        })();
+    </script>
+}

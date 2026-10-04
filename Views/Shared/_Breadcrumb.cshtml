@@ -1,0 +1,23 @@
+@model BreadcrumbViewModel
+
+@if (Model.Items.Count > 0)
+{
+    <nav aria-label="Breadcrumb">
+        <ol class="aq-breadcrumb">
+            @foreach (var item in Model.Items)
+            {
+                <li>
+                    @if (item.IsCurrent)
+                    {
+                        <span aria-current="page">@item.Text</span>
+                    }
+                    else
+                    {
+                        <a asp-controller="@item.ControllerName" asp-action="@item.ActionName"
+                           asp-all-route-data="@item.RouteValues">@item.Text</a>
+                    }
+                </li>
+            }
+        </ol>
+    </nav>
+}

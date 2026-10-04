@@ -1,0 +1,69 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+
+    var returnUrl = ViewData["ReturnUrl"] as string;
+
+    var breadcrumb = new BreadcrumbViewModel(
+        new BreadcrumbItem("Home", "Home", "Index"),
+        new BreadcrumbItem("Register"));
+}
+
+<partial name="_Breadcrumb" model="breadcrumb" />
+
+<section class="aq-section">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-9 col-lg-6">
+
+            <div class="text-center mb-4">
+                <p class="aq-eyebrow mb-1">Join us</p>
+                <h1 class="aq-section-title">Create your account</h1>
+                <p class="aq-section-sub">Track your orders and check out faster.</p>
+            </div>
+
+            <div class="aq-panel p-4 p-md-5">
+                <form asp-controller="Account" asp-action="Register" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="FullName"></label>
+                        <input class="form-control" asp-for="FullName" autocomplete="name" autofocus />
+                        <span class="text-danger small d-block mt-1" asp-validation-for="FullName"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Email"></label>
+                        <input class="form-control" asp-for="Email" autocomplete="username" inputmode="email" />
+                        <span class="text-danger small d-block mt-1" asp-validation-for="Email"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Password"></label>
+                        <input class="form-control" asp-for="Password" autocomplete="new-password" />
+                        <span class="text-danger small d-block mt-1" asp-validation-for="Password"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" asp-for="ConfirmPassword"></label>
+                        <input class="form-control" asp-for="ConfirmPassword" autocomplete="new-password" />
+                        <span class="text-danger small d-block mt-1" asp-validation-for="ConfirmPassword"></span>
+                    </div>
+
+                    <button type="submit" class="aq-btn aq-btn-orange aq-btn-block aq-btn-lg">Create account</button>
+                </form>
+            </div>
+
+            <p class="text-center mt-4 mb-0" style="color: var(--aq-muted);">
+                Already have an account?
+                <a asp-controller="Account" asp-action="Login"
+                   asp-route-returnUrl="@returnUrl">Sign in</a>
+            </p>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
